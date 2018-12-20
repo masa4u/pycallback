@@ -1,35 +1,54 @@
 {
-  "name": "emo-sandbox",
-  "version": "3.0.0",
-  "description": "Some desc here",
+  "name": "electron-ts-react-mobx-broilerplate",
+  "version": "1.0.0",
+  "description": "Electron boilerplate with Typescript, React and Mobx",
   "main": "./dist/main.bundle.js",
-  "private": true,
+  "author": "Tanel Vari",
+  "license": "MIT",
+  "repository": {
+    "type": "public",
+    "url": "https://github.com/TanelVari/electron-ts-react-mobx-broilerplate"
+  },
   "scripts": {
     "start": "electron ./dist/main.bundle.js",
     "development": "rimraf dist && webpack --watch --config ./webpack.dev.js --progress --colors",
-    "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors"
+    "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
-  "author": "Tanel Vari",
-  "license": "MIT",
+  "build": {
+    "productName": "electron",
+    "appId": "com.electronexample.app",
+    "forceCodeSigning": false,
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    }
+  },
   "devDependencies": {
-    "@types/react": "^16.7.17",
-    "@types/react-dom": "^16.0.11",
-    "css-loader": "^2.0.1",
+    "@types/react": "16.7.x",
+    "@types/react-dom": "16.0.x",
+    "css-loader": "2.0.x",
     "electron": "3.0.13",
-    "file-loader": "^2.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.11.0",
+    "electron-builder": "20.38.x",
+    "file-loader": "2.0.x",
+    "html-webpack-plugin": "3.2.x",
+    "node-sass": "4.11.x",
     "prettier": "1.15.3",
-    "rimraf": "^2.6.2",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.1",
-    "typescript": "^3.2.2",
-    "webpack": "^4.28.0",
-    "webpack-cli": "^3.1.2"
+    "rimraf": "2.6.x",
+    "sass-loader": "7.1.x",
+    "style-loader": "0.23.x",
+    "ts-loader": "5.3.x",
+    "typescript": "3.2.x",
+    "webpack": "4.28.x",
+    "webpack-cli": "3.1.x"
   },
   "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react": "16.6.x",
+    "react-dom": "16.6.x"
   }
 }
