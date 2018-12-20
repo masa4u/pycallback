@@ -1,5 +1,21 @@
-.DS_Store
+# dependencies
 node_modules
-dist
-package-lock.json
-release
+
+# system files
+.DS_Store
+
+# Logs
+*.log
+
+# build artifacts
+dist/
+
+# Logs
+*.log
+
+# vs code workspace
+.code-workspace
+
+# misc files
+package-deps.json
+release/
