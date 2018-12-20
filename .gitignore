@@ -17,5 +17,6 @@ dist/
 .code-workspace
 
 # misc files
+package-lock.json
 package-deps.json
-release/
+release
