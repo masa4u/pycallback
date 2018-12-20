@@ -6,7 +6,7 @@ import './styles.scss';
 
 ReactDOM.render(
     <div>
-        <h4>Welcome to React, Electron and Typescript</h4>
+        <h4>Welcome to Electron, Typescript, React and Mobx</h4>
     </div>,
     document.getElementById('app')
 );
