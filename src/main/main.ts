@@ -2,6 +2,8 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
+const isDev = process.env.ELECTRON_MODE == 'dev';
+
 let mainWindow: Electron.BrowserWindow;
 
 function createWindow() {
@@ -11,17 +13,27 @@ function createWindow() {
         width: 800,
     });
 
+    const url = isDev
+        ? `http://localhost:3000`
+        : `file://${__dirname}/index.html`;
+
+    if (isDev) {
+        mainWindow.webContents.openDevTools();
+    }
+
+    mainWindow.loadURL(url);
+
     // and load the index.html of the app.
-    mainWindow.loadURL(
-        url.format({
-            pathname: path.join(__dirname, './index.html'),
-            protocol: 'file:',
-            slashes: true,
-        })
-    );
+    // mainWindow.loadURL(
+    //     url.format({
+    //         pathname: path.join(__dirname, './index.html'),
+    //         protocol: 'file:',
+    //         slashes: true,
+    //     })
+    // );
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {

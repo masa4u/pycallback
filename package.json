@@ -11,10 +11,14 @@
   },
   "scripts": {
     "start": "electron ./dist/main.bundle.js",
+    "startdev": "cross-env ELECTRON_MODE=dev electron ./dist/main.bundle.js",
     "development": "rimraf dist && webpack --watch --config ./webpack.dev.js --progress --colors",
     "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
+
+    "dev": "webpack --config ./webpack.dev.js",
+    "server": "npm run dev && webpack-dev-server --config ./webpack.server.js",
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
@@ -32,6 +36,8 @@
   "devDependencies": {
     "@types/react": "16.7.x",
     "@types/react-dom": "16.0.x",
+    "@types/webpack-env": "1.13.x",
+    "cross-env": "5.2.x",
     "css-loader": "2.0.x",
     "electron": "3.0.13",
     "electron-builder": "20.38.x",
@@ -39,13 +45,16 @@
     "html-webpack-plugin": "3.2.x",
     "node-sass": "4.11.x",
     "prettier": "1.15.3",
+    "react-hot-loader": "4.6.x",
     "rimraf": "2.6.x",
     "sass-loader": "7.1.x",
     "style-loader": "0.23.x",
     "ts-loader": "5.3.x",
     "typescript": "3.2.x",
     "webpack": "4.28.x",
-    "webpack-cli": "3.1.x"
+    "webpack-cli": "3.1.x",
+    "webpack-dev-server": "3.1.x",
+    "webpack-merge": "4.1.x"
   },
   "dependencies": {
     "react": "16.6.x",

@@ -1,12 +1,25 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-// Import the styles here to process them with webpack
-import './styles.scss';
+import App from './app';
+import { AppContainer } from 'react-hot-loader';
 
+const rootEl = document.getElementById('root');
 ReactDOM.render(
-    <div>
-        <h4>Welcome to Electron, Typescript, React and Mobx</h4>
-    </div>,
-    document.getElementById('app')
+    <AppContainer>
+        <App />
+    </AppContainer>,
+    rootEl
 );
+
+if (module.hot) {
+    module.hot.accept('./app', () => {
+        const HotApp = require('./app').default;
+        ReactDOM.render(
+            <AppContainer>
+                <HotApp />
+            </AppContainer>,
+            rootEl
+        );
+    });
+}
