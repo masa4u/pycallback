@@ -16,7 +16,6 @@
     "production": "rimraf dist && webpack --config ./webpack.prod.js --progress --colors",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-
     "dev": "webpack --config ./webpack.dev.js",
     "server": "npm run dev && webpack-dev-server --config ./webpack.server.js",
     "postinstall": "electron-builder install-app-deps"
@@ -43,6 +42,8 @@
     "electron-builder": "20.38.x",
     "file-loader": "2.0.x",
     "html-webpack-plugin": "3.2.x",
+    "mobx": "5.8.x",
+    "mobx-react": "5.4.x",
     "node-sass": "4.11.x",
     "prettier": "1.15.3",
     "react-hot-loader": "4.6.x",
