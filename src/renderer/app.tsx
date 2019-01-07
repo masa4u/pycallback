@@ -1,13 +1,18 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import './styles.scss';
+import './../css/styles.scss'
+import MainView from './MainView'
 
-export default class App extends React.Component<any, any> {
-    render(): JSX.Element {
-        return (
-            <div>
-                <h4>Welcome to Electron, Typescript, React and Mobx</h4>
-            </div>
-        );
-    }
+import { observer } from 'mobx-react'
+
+export class App extends React.Component<any, any> {
+	public render() {
+		return (
+			<div className="app">
+				<MainView />
+			</div>
+		)
+	}
 }
+
+export default observer(App)

@@ -5,6 +5,7 @@ const exp = require('./webpack.dev');
 module.exports = merge.smart({
     entry: [
         "react-hot-loader/patch",
+        // activate HMR for React
 
         'webpack-dev-server/client?http://localhost:3000',
         // bundle the client for webpack-dev-server
@@ -16,9 +17,14 @@ module.exports = merge.smart({
     ],
 
     plugins: [
-        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        // enable HMR globally
+
+        new webpack.NamedModulesPlugin(),
+        // prints more readable module names in the browser console on HMR updates
+
         new webpack.NoEmitOnErrorsPlugin(),
+        // do not emit compiled assets that include errors
     ],
 
     devtool: "inline-source-map",
