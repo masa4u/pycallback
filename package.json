@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/react": "16.7.x",
     "@types/react-dom": "16.0.x",
+    "@types/styled-components": "4.1.x",
     "@types/webpack-env": "1.13.x",
     "cross-env": "5.2.x",
     "css-loader": "2.0.x",
@@ -50,6 +51,7 @@
     "rimraf": "2.6.x",
     "sass-loader": "7.1.x",
     "style-loader": "0.23.x",
+    "styled-components": "4.1.x",
     "ts-loader": "5.3.x",
     "typescript": "3.2.x",
     "webpack": "4.28.x",

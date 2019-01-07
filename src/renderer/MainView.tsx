@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import UIStore from './../store/UIStore'
+import styled from 'styled-components'
+import './MainView.scss'
 
 export class MainView extends React.Component<any, any> {
 	private handleButtonClick = () => {
@@ -9,17 +11,30 @@ export class MainView extends React.Component<any, any> {
 
 	render(): JSX.Element {
 		return (
-			<div>
-				<h2>Welcome to Electron, Typescript, React and Mobx</h2>
+			<div className="mainView">
+				<Title>Welcome to Electron, Typescript, React and Mobx</Title>
 
-				<button type="button" onClick={() => this.handleButtonClick()}>
-					Toggle message
-				</button>
+				<Button onClick={() => this.handleButtonClick()}>Toggle message</Button>
 
-				{UIStore.isMessageShown && <h4>{UIStore.getMessage}</h4>}
+				<div className="smallPrint">Click the button to toggle message</div>
+
+				{UIStore.isMessageShown && <Message>{UIStore.getMessage}</Message>}
 			</div>
 		)
 	}
 }
 
 export default observer(MainView)
+
+const Title = styled.h2`
+	padding: 20px 12px;
+	font-size: 24px;
+`
+const Button = styled.button`
+	margin: 12px;
+	padding: 4px;
+`
+const Message = styled.div`
+	margin: 12px;
+	margin-top: 20px;
+`
