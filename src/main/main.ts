@@ -7,8 +7,12 @@ let mainWindow: Electron.BrowserWindow
 function createWindow() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		height: 600,
 		width: 800,
+		height: 600,
+		title: 'Electron',
+		backgroundColor: '#ffffff',
+		minWidth: 480,
+		minHeight: 360,
 	})
 
 	const url = isDev ? `http://localhost:3000` : `file://${__dirname}/index.html`
