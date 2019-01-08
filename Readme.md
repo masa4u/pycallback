@@ -1,8 +1,4 @@
-Boilerplate for Electron, React, Typescript and Mobx with Hot Reload
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+# Boilerplate for Electron, React, Typescript and Mobx with Hot Reload
 
 ## Development with hot reloading
 
@@ -31,6 +27,8 @@ Based on:
 -   [https://github.com/quantumkv/electron-react-hot-ts-boilerplate](https://github.com/quantumkv/electron-react-hot-ts-boilerplate)
 -   [https://github.com/gaoshang212/electron-typescript-react-mobx-boilerplate](https://github.com/gaoshang212/electron-typescript-react-mobx-boilerplate)
 
+... and other resources found on web.
+
 ## Notes
 
 -   Tested on Mac only.
@@ -40,3 +38,7 @@ Based on:
 
 -   `"noImplicitAny": true` and `"noImplicitThis": true` in `tsconfig.json` throw errors during build time
 -   `"strictNullChecks": true` in `tsconfig.json` conflicts with `mainWindow = null` in `main.ts`
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
