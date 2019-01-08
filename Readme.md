@@ -34,3 +34,8 @@ Based on:
 
 -   Tested on Mac only.
 -   To skip code signing on Mac enter `export CSC_IDENTITY_AUTO_DISCOVERY=false` from terminal.
+
+## Known issues
+
+-   `"noImplicitAny": true` and `"noImplicitThis": true` in `tsconfig.json` throw errors during build time
+-   `"strictNullChecks": true` in `tsconfig.json` conflicts with `mainWindow = null` in `main.ts`
