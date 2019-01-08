@@ -271,7 +271,7 @@ function createWindow() {
 			{
 				label: '&View',
 				submenu:
-					process.env.NODE_ENV === 'development'
+					isDev
 						? [
 								{
 									label: '&Reload',
