@@ -38,6 +38,7 @@ Based on:
 
 -   `"noImplicitAny": true` and `"noImplicitThis": true` in `tsconfig.json` throw errors during build time
 -   `"strictNullChecks": true` in `tsconfig.json` conflicts with `mainWindow = null` in `main.ts`
+-   MobX decorators won't work on class definition
 
 ## License
 
