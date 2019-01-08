@@ -4,10 +4,13 @@
 		"jsx": "react",
 		"module": "esnext",
 		"moduleResolution": "node",
-		"noImplicitAny": false,
-		"noImplicitThis": false,
 		"sourceMap": true,
 		"target": "es5",
+
+		"noImplicitAny": false,
+		"noImplicitThis": false,
+		"strictNullChecks": true,
+		"alwaysStrict": true,
 
 		"downlevelIteration": true,
 		"importHelpers": true,
@@ -18,9 +21,8 @@
 		"experimentalDecorators": true,
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
-		"noUnusedLocals": false,
+		"noUnusedLocals": true,
 		"skipLibCheck": true,
-		"strictNullChecks": false,
 		"suppressImplicitAnyIndexErrors": true
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx"],

@@ -1,6 +1,4 @@
 import { app, BrowserWindow } from 'electron'
-import * as path from 'path'
-import * as url from 'url'
 
 const isDev = process.env.ELECTRON_MODE == 'dev'
 
@@ -21,23 +19,14 @@ function createWindow() {
 
 	mainWindow.loadURL(url)
 
-	// and load the index.html of the app.
-	// mainWindow.loadURL(
-	//     url.format({
-	//         pathname: path.join(__dirname, './index.html'),
-	//         protocol: 'file:',
-	//         slashes: true,
-	//     })
-	// );
-
-	// Open the DevTools.
-	// mainWindow.webContents.openDevTools();
-
 	// Emitted when the window is closed.
 	mainWindow.on('closed', () => {
 		// Dereference the window object, usually you would store windows
 		// in an array if your app supports multi windows, this is the time
 		// when you should delete the corresponding element.
+
+		// TS "strictNullChecks" complains but Electron documentation insists
+		// @ts-ignore
 		mainWindow = null
 	})
 }
@@ -64,5 +53,5 @@ app.on('activate', () => {
 	}
 })
 
-// In this file you can include the rest of your app"s specific main process
+// In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

@@ -1,8 +1,8 @@
 import { observable, action, computed } from 'mobx'
 
 export class UI {
-	private messagePart1: string = 'Hello'
-	private messagePart2: string = 'world!'
+	private _message1: string = 'Hello'
+	private _message2: string = 'world!'
 
 	@observable
 	public isMessageShown: boolean = true
@@ -14,10 +14,11 @@ export class UI {
 
 	@computed
 	public get getMessage(): string {
-		return this.messagePart1 + ' ' + this.messagePart2
+		return this._message1 + ' ' + this._message2
 	}
 }
 
-const UIStore = new UI()
+//// @ts-ignore: TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+const UIStore: UI = new UI()
 
 export default UIStore
