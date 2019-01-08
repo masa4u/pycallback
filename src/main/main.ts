@@ -12,10 +12,16 @@ function createWindow() {
 		width: 800,
 		height: 600,
 		resizable: true,
+		movable: true,
+		minimizable: true,
+		maximizable: true,
+		closable: true,
+		focusable: true,
 		title: 'Electron',
 		backgroundColor: '#ffffff',
 		minWidth: 480,
 		minHeight: 360,
+		show: false,
 	})
 
 	const url = isDev ? `http://localhost:3000` : `file://${__dirname}/index.html`
@@ -48,6 +54,11 @@ function createWindow() {
 		// TS "strictNullChecks" complains but Electron documentation insists
 		// @ts-ignore: TS2322: Type 'null' is not assignable to type 'BrowserWindow'.
 		mainWindow = null
+	})
+
+	mainWindow.on('ready-to-show', function() {
+		mainWindow.show()
+		mainWindow.focus()
 	})
 
 	// Menu
