@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Electron boilerplate with Typescript, React and Mobx",
   "main": "./dist/main.bundle.js",
-  "author": "Tanel Vari",
+  "author": "",
   "license": "MIT",
   "repository": {
     "type": "public",

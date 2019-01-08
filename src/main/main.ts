@@ -1,14 +1,17 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, shell, Menu } from 'electron'
 
 const isDev = process.env.ELECTRON_MODE == 'dev'
 
 let mainWindow: Electron.BrowserWindow
+let template: any[] = []
+let menu: any
 
 function createWindow() {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
+		resizable: true,
 		title: 'Electron',
 		backgroundColor: '#ffffff',
 		minWidth: 480,
@@ -19,6 +22,19 @@ function createWindow() {
 
 	if (isDev) {
 		mainWindow.webContents.openDevTools()
+
+		// @ts-ignore: ignore unused 'e'
+		mainWindow.webContents.on('context-menu', (e, props) => {
+			const { x, y } = props
+			Menu.buildFromTemplate([
+				{
+					label: 'Inspect element',
+					click() {
+						mainWindow.webContents.inspectElement(x, y)
+					},
+				},
+			]).popup({ window: mainWindow })
+		})
 	}
 
 	mainWindow.loadURL(url)
@@ -30,9 +46,272 @@ function createWindow() {
 		// when you should delete the corresponding element.
 
 		// TS "strictNullChecks" complains but Electron documentation insists
-		// @ts-ignore
+		// @ts-ignore: TS2322: Type 'null' is not assignable to type 'BrowserWindow'.
 		mainWindow = null
 	})
+
+	// Menu
+	if (process.platform === 'darwin') {
+		template = [
+			{
+				label: 'Electron',
+				submenu: [
+					{
+						label: 'About',
+						selector: 'orderFrontStandardAboutPanel:',
+					},
+					{
+						type: 'separator',
+					},
+					{
+						label: 'Services',
+						submenu: [],
+					},
+					{
+						type: 'separator',
+					},
+					{
+						label: 'Hide',
+						accelerator: 'Command+H',
+						selector: 'hide:',
+					},
+					{
+						label: 'Hide Others',
+						accelerator: 'Command+Shift+H',
+						selector: 'hideOtherApplications:',
+					},
+					{
+						label: 'Show All',
+						selector: 'unhideAllApplications:',
+					},
+					{
+						type: 'separator',
+					},
+					{
+						label: 'Quit',
+						accelerator: 'Command+Q',
+						click() {
+							app.quit()
+						},
+					},
+				],
+			},
+			{
+				label: 'Edit',
+				submenu: [
+					{
+						label: 'Undo',
+						accelerator: 'Command+Z',
+						selector: 'undo:',
+					},
+					{
+						label: 'Redo',
+						accelerator: 'Shift+Command+Z',
+						selector: 'redo:',
+					},
+					{
+						type: 'separator',
+					},
+					{
+						label: 'Cut',
+						accelerator: 'Command+X',
+						selector: 'cut:',
+					},
+					{
+						label: 'Copy',
+						accelerator: 'Command+C',
+						selector: 'copy:',
+					},
+					{
+						label: 'Paste',
+						accelerator: 'Command+V',
+						selector: 'paste:',
+					},
+					{
+						label: 'Select All',
+						accelerator: 'Command+A',
+						selector: 'selectAll:',
+					},
+				],
+			},
+			{
+				label: 'View',
+				submenu: isDev
+					? [
+							{
+								label: 'Reload',
+								accelerator: 'Command+R',
+								click() {
+									mainWindow.webContents.reload()
+								},
+							},
+							{
+								label: 'Toggle Full Screen',
+								accelerator: 'Ctrl+Command+F',
+								click() {
+									mainWindow.setFullScreen(!mainWindow.isFullScreen())
+								},
+							},
+							{
+								label: 'Toggle Developer Tools',
+								accelerator: 'Alt+Command+I',
+								click() {
+									mainWindow.webContents.toggleDevTools()
+								},
+							},
+					  ]
+					: [
+							{
+								label: 'Toggle Full Screen',
+								accelerator: 'Ctrl+Command+F',
+								click() {
+									mainWindow.setFullScreen(!mainWindow.isFullScreen())
+								},
+							},
+					  ],
+			},
+			{
+				label: 'Window',
+				submenu: [
+					{
+						label: 'Minimize',
+						accelerator: 'Command+M',
+						selector: 'performMiniaturize:',
+					},
+					{
+						label: 'Close',
+						accelerator: 'Command+W',
+						selector: 'performClose:',
+					},
+					{
+						type: 'separator',
+					},
+					{
+						label: 'Bring All to Front',
+						selector: 'arrangeInFront:',
+					},
+				],
+			},
+			{
+				label: 'Help',
+				submenu: [
+					{
+						label: 'Learn More',
+						click() {
+							shell.openExternal('http://electron.atom.io')
+						},
+					},
+					{
+						label: 'Documentation',
+						click() {
+							shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme')
+						},
+					},
+					{
+						label: 'Community Discussions',
+						click() {
+							shell.openExternal('https://discuss.atom.io/c/electron')
+						},
+					},
+					{
+						label: 'Search Issues',
+						click() {
+							shell.openExternal('https://github.com/atom/electron/issues')
+						},
+					},
+				],
+			},
+		]
+
+		menu = Menu.buildFromTemplate(template)
+		Menu.setApplicationMenu(menu)
+	} else {
+		template = [
+			{
+				label: '&File',
+				submenu: [
+					{
+						label: '&Open',
+						accelerator: 'Ctrl+O',
+					},
+					{
+						label: '&Close',
+						accelerator: 'Ctrl+W',
+						click() {
+							mainWindow.close()
+						},
+					},
+				],
+			},
+			{
+				label: '&View',
+				submenu:
+					process.env.NODE_ENV === 'development'
+						? [
+								{
+									label: '&Reload',
+									accelerator: 'Ctrl+R',
+									click() {
+										mainWindow.webContents.reload()
+									},
+								},
+								{
+									label: 'Toggle &Full Screen',
+									accelerator: 'F11',
+									click() {
+										mainWindow.setFullScreen(!mainWindow.isFullScreen())
+									},
+								},
+								{
+									label: 'Toggle &Developer Tools',
+									accelerator: 'Alt+Ctrl+I',
+									click() {
+										mainWindow.webContents.toggleDevTools()
+									},
+								},
+						  ]
+						: [
+								{
+									label: 'Toggle &Full Screen',
+									accelerator: 'F11',
+									click() {
+										mainWindow.setFullScreen(!mainWindow.isFullScreen())
+									},
+								},
+						  ],
+			},
+			{
+				label: 'Help',
+				submenu: [
+					{
+						label: 'Learn More',
+						click() {
+							shell.openExternal('http://electron.atom.io')
+						},
+					},
+					{
+						label: 'Documentation',
+						click() {
+							shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme')
+						},
+					},
+					{
+						label: 'Community Discussions',
+						click() {
+							shell.openExternal('https://discuss.atom.io/c/electron')
+						},
+					},
+					{
+						label: 'Search Issues',
+						click() {
+							shell.openExternal('https://github.com/atom/electron/issues')
+						},
+					},
+				],
+			},
+		]
+		menu = Menu.buildFromTemplate(template)
+	}
 }
 
 // This method will be called when Electron has finished

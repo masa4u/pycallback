@@ -29,6 +29,7 @@ Based on:
 
 -   [https://taraksharma.com/setting-up-electron-typescript-react-webpack/](https://taraksharma.com/setting-up-electron-typescript-react-webpack/)
 -   [https://github.com/quantumkv/electron-react-hot-ts-boilerplate](https://github.com/quantumkv/electron-react-hot-ts-boilerplate)
+-   [https://github.com/gaoshang212/electron-typescript-react-mobx-boilerplate](https://github.com/gaoshang212/electron-typescript-react-mobx-boilerplate)
 
 ## Notes
 
