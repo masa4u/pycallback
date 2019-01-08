@@ -1,5 +1,6 @@
 import { app, BrowserWindow, shell, Menu } from 'electron'
 
+const windowStateKeeper = require('electron-window-state')
 const isDev = process.env.ELECTRON_MODE == 'dev'
 
 let mainWindow: Electron.BrowserWindow
@@ -7,10 +8,18 @@ let template: any[] = []
 let menu: any
 
 function createWindow() {
-	// Create the browser window.
+	// Load the previous state with fallback to defaults
+	let mainWindowState = windowStateKeeper({
+		defaultWidth: 800,
+		defaultHeight: 600,
+	})
+
+	// Create the browser window using state information
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
 		resizable: true,
 		movable: true,
 		minimizable: true,
@@ -23,6 +32,11 @@ function createWindow() {
 		minHeight: 360,
 		show: false,
 	})
+
+	// Let us register listeners on the window, so we can update the state
+	// automatically (the listeners will be removed when the window is closed)
+	// and restore the maximized or full screen state
+	mainWindowState.manage(mainWindow)
 
 	const url = isDev ? `http://localhost:3000` : `file://${__dirname}/index.html`
 
