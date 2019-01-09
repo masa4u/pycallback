@@ -41,7 +41,9 @@ function createWindow() {
 	const url = isDev ? `http://localhost:3000` : `file://${__dirname}/index.html`
 
 	if (isDev) {
-		mainWindow.webContents.openDevTools()
+		setTimeout(() => {
+			mainWindow.webContents.openDevTools()
+		}, 1200)
 
 		// @ts-ignore: ignore unused 'e'
 		mainWindow.webContents.on('context-menu', (e, props) => {
