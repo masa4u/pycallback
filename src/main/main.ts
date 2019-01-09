@@ -72,7 +72,7 @@ function createWindow() {
 		mainWindow = null
 	})
 
-	mainWindow.on('ready-to-show', function() {
+	mainWindow.on('ready-to-show', () => {
 		mainWindow.show()
 		mainWindow.focus()
 	})
