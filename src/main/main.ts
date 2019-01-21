@@ -1,4 +1,8 @@
-import { app, BrowserWindow, shell, Menu } from 'electron'
+import { app, BrowserWindow, Tray, Menu } from 'electron'
+// import * as notify from 'node-notifier'
+
+import * as path from 'path'
+import * as child_process from 'child_process'
 
 const windowStateKeeper = require('electron-window-state')
 const isDev = process.env.ELECTRON_MODE == 'dev'
@@ -6,12 +10,14 @@ const isDev = process.env.ELECTRON_MODE == 'dev'
 let mainWindow: Electron.BrowserWindow
 let template: any[] = []
 let menu: any
+let tray: Tray | null = null
+// let notifier = notify
 
 function createWindow() {
 	// Load the previous state with fallback to defaults
 	let mainWindowState = windowStateKeeper({
-		defaultWidth: 800,
-		defaultHeight: 600,
+		defaultWidth: 300,
+		defaultHeight: 300,
 	})
 
 	// Create the browser window using state information
@@ -26,8 +32,8 @@ function createWindow() {
 		maximizable: true,
 		closable: true,
 		focusable: true,
-		title: 'Electron',
-		backgroundColor: '#ffffff',
+		title: 'TestApplication',
+		backgroundColor: '#333333',
 		minWidth: 480,
 		minHeight: 360,
 		show: false,
@@ -41,9 +47,9 @@ function createWindow() {
 	const url = isDev ? `http://localhost:3000` : `file://${__dirname}/index.html`
 
 	if (isDev) {
-		setTimeout(() => {
-			mainWindow.webContents.openDevTools()
-		}, 1200)
+		// setTimeout(() => {
+		// 	mainWindow.webContents.openDevTools()
+		// }, 1200)
 
 		// @ts-ignore: ignore unused 'e'
 		mainWindow.webContents.on('context-menu', (e, props) => {
@@ -70,276 +76,16 @@ function createWindow() {
 		// TS "strictNullChecks" complains but Electron documentation insists
 		// @ts-ignore: TS2322: Type 'null' is not assignable to type 'BrowserWindow'.
 		mainWindow = null
+		console.log('windows closed')
 	})
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow.show()
 		mainWindow.focus()
 	})
+} // createWindow on ready message
 
-	// Menu
-	if (process.platform === 'darwin') {
-		template = [
-			{
-				label: 'Electron',
-				submenu: [
-					{
-						label: 'About',
-						selector: 'orderFrontStandardAboutPanel:',
-					},
-					{
-						type: 'separator',
-					},
-					{
-						label: 'Services',
-						submenu: [],
-					},
-					{
-						type: 'separator',
-					},
-					{
-						label: 'Hide',
-						accelerator: 'Command+H',
-						selector: 'hide:',
-					},
-					{
-						label: 'Hide Others',
-						accelerator: 'Command+Shift+H',
-						selector: 'hideOtherApplications:',
-					},
-					{
-						label: 'Show All',
-						selector: 'unhideAllApplications:',
-					},
-					{
-						type: 'separator',
-					},
-					{
-						label: 'Quit',
-						accelerator: 'Command+Q',
-						click() {
-							app.quit()
-						},
-					},
-				],
-			},
-			{
-				label: 'Edit',
-				submenu: [
-					{
-						label: 'Undo',
-						accelerator: 'Command+Z',
-						selector: 'undo:',
-					},
-					{
-						label: 'Redo',
-						accelerator: 'Shift+Command+Z',
-						selector: 'redo:',
-					},
-					{
-						type: 'separator',
-					},
-					{
-						label: 'Cut',
-						accelerator: 'Command+X',
-						selector: 'cut:',
-					},
-					{
-						label: 'Copy',
-						accelerator: 'Command+C',
-						selector: 'copy:',
-					},
-					{
-						label: 'Paste',
-						accelerator: 'Command+V',
-						selector: 'paste:',
-					},
-					{
-						label: 'Select All',
-						accelerator: 'Command+A',
-						selector: 'selectAll:',
-					},
-				],
-			},
-			{
-				label: 'View',
-				submenu: isDev
-					? [
-							{
-								label: 'Reload',
-								accelerator: 'Command+R',
-								click() {
-									mainWindow.webContents.reload()
-								},
-							},
-							{
-								label: 'Toggle Full Screen',
-								accelerator: 'Ctrl+Command+F',
-								click() {
-									mainWindow.setFullScreen(!mainWindow.isFullScreen())
-								},
-							},
-							{
-								label: 'Toggle Developer Tools',
-								accelerator: 'Alt+Command+I',
-								click() {
-									mainWindow.webContents.toggleDevTools()
-								},
-							},
-					  ]
-					: [
-							{
-								label: 'Toggle Full Screen',
-								accelerator: 'Ctrl+Command+F',
-								click() {
-									mainWindow.setFullScreen(!mainWindow.isFullScreen())
-								},
-							},
-					  ],
-			},
-			{
-				label: 'Window',
-				submenu: [
-					{
-						label: 'Minimize',
-						accelerator: 'Command+M',
-						selector: 'performMiniaturize:',
-					},
-					{
-						label: 'Close',
-						accelerator: 'Command+W',
-						selector: 'performClose:',
-					},
-					{
-						type: 'separator',
-					},
-					{
-						label: 'Bring All to Front',
-						selector: 'arrangeInFront:',
-					},
-				],
-			},
-			{
-				label: 'Help',
-				submenu: [
-					{
-						label: 'Learn More',
-						click() {
-							shell.openExternal('http://electron.atom.io')
-						},
-					},
-					{
-						label: 'Documentation',
-						click() {
-							shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme')
-						},
-					},
-					{
-						label: 'Community Discussions',
-						click() {
-							shell.openExternal('https://discuss.atom.io/c/electron')
-						},
-					},
-					{
-						label: 'Search Issues',
-						click() {
-							shell.openExternal('https://github.com/atom/electron/issues')
-						},
-					},
-				],
-			},
-		]
-
-		menu = Menu.buildFromTemplate(template)
-		Menu.setApplicationMenu(menu)
-	} else {
-		template = [
-			{
-				label: '&File',
-				submenu: [
-					{
-						label: '&Open',
-						accelerator: 'Ctrl+O',
-					},
-					{
-						label: '&Close',
-						accelerator: 'Ctrl+W',
-						click() {
-							mainWindow.close()
-						},
-					},
-				],
-			},
-			{
-				label: '&View',
-				submenu:
-					isDev
-						? [
-								{
-									label: '&Reload',
-									accelerator: 'Ctrl+R',
-									click() {
-										mainWindow.webContents.reload()
-									},
-								},
-								{
-									label: 'Toggle &Full Screen',
-									accelerator: 'F11',
-									click() {
-										mainWindow.setFullScreen(!mainWindow.isFullScreen())
-									},
-								},
-								{
-									label: 'Toggle &Developer Tools',
-									accelerator: 'Alt+Ctrl+I',
-									click() {
-										mainWindow.webContents.toggleDevTools()
-									},
-								},
-						  ]
-						: [
-								{
-									label: 'Toggle &Full Screen',
-									accelerator: 'F11',
-									click() {
-										mainWindow.setFullScreen(!mainWindow.isFullScreen())
-									},
-								},
-						  ],
-			},
-			{
-				label: 'Help',
-				submenu: [
-					{
-						label: 'Learn More',
-						click() {
-							shell.openExternal('http://electron.atom.io')
-						},
-					},
-					{
-						label: 'Documentation',
-						click() {
-							shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme')
-						},
-					},
-					{
-						label: 'Community Discussions',
-						click() {
-							shell.openExternal('https://discuss.atom.io/c/electron')
-						},
-					},
-					{
-						label: 'Search Issues',
-						click() {
-							shell.openExternal('https://github.com/atom/electron/issues')
-						},
-					},
-				],
-			},
-		]
-		menu = Menu.buildFromTemplate(template)
-	}
-}
+app.setAppUserModelId(process.execPath)
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -365,3 +111,121 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// https://github.com/fyears/electron-python-example python call reference
+let pyProc: child_process.ChildProcess | null = null
+let pyPort: number | null = null
+const selectPort = () => {
+	pyPort = 4242
+	return pyPort
+}
+
+const createPyProc = () => {
+	console.log('createPyProc')
+	let port = '' + selectPort()
+	let script = path.join(__dirname, 'py', 'api.py')
+	pyProc = child_process.spawn('python', [script, port])
+	if (pyProc != null) {
+		console.log('child process success')
+	}
+}
+
+const exitPyProc = () => {
+	if (pyProc != null) {
+		pyProc.kill()
+	}
+	pyProc = null
+	pyPort = null
+}
+
+app.on('ready', createPyProc)
+app.on('will-quit', exitPyProc)
+
+app.on('ready', () => {
+	console.log('---------------Create Tray Menu')
+	// Menu
+	template = [
+		{
+			label: 'Help',
+			submenu: [
+				{
+					label: 'Notify',
+					click() {
+						// eNotify.setConfig({ displayTime: 6000 })
+						// notifier.notify({ title: 'fdsafdsafds', text: 'fdsafsdafsda' })
+						console.log('Notify - ')
+					},
+				},
+				{
+					label: 'OpenLogger',
+					click() {
+						console.log('OpenLogger')
+					},
+				},
+				{
+					label: 'OpenDebugger',
+					click() {
+						mainWindow.webContents.openDevTools()
+					},
+				},
+				{
+					label: '&Exit',
+					click() {},
+				},
+			],
+		},
+	]
+	menu = Menu.buildFromTemplate(template)
+	Menu.setApplicationMenu(menu)
+
+	// build try Icon
+	const tryTemplate = [
+		{
+			label: 'Empty Application',
+			checked: true,
+			enabled: false,
+		},
+		{
+			label: 'Settings',
+			click: function() {
+				funcSetting()
+			},
+		},
+		{
+			label: 'Log',
+			click: function() {
+				console.log('Cliked on Log')
+			},
+		},
+		{
+			label: 'Exit',
+			click() {
+				console.log('exit')
+			},
+		},
+	]
+	let trayMenu = Menu.buildFromTemplate(tryTemplate)
+	tray = new Tray(path.join(__dirname, 'icon/images.png'))
+	tray.setToolTip('This is my application')
+
+	// set message on tray
+	tray.on('click', () => {
+		mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+	})
+
+	// trayMenu.on('menu-will-close', (event) => {
+	// 	console.log('menu-will-close event')
+	// })
+	tray.setContextMenu(trayMenu)
+
+	let idx: number = 0
+	function funcSetting() {
+		console.log('funcSetting Called')
+		if (tray != null) {
+			console.log(idx)
+			trayMenu.items[1].label = 'Settings' + idx
+			tray.setContextMenu(trayMenu)
+			idx = idx + 1
+		}
+	}
+})

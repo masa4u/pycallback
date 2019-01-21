@@ -61,7 +61,10 @@
     "webpack-merge": "4.1.x"
   },
   "dependencies": {
+    "@types/electron-notify": "^0.1.7",
+    "electron-notify": "^0.1.0",
     "react": "16.6.x",
-    "react-dom": "16.6.x"
+    "react-dom": "16.6.x",
+    "screen": "^0.2.10"
   }
 }

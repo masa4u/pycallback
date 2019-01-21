@@ -12,7 +12,7 @@ export class MainView extends React.Component<any, any> {
 	render(): JSX.Element {
 		return (
 			<div className="mainView">
-				<Title>Welcome to Electron, Typescript, React and Mobx</Title>
+				<Title>테스트</Title>
 
 				<Button onClick={() => this.handleButtonClick()}>Toggle message</Button>
 
@@ -29,12 +29,15 @@ export default observer(MainView)
 const Title = styled.h2`
 	padding: 20px 12px;
 	font-size: 24px;
+	color: #eeeeee;
 `
 const Button = styled.button`
 	margin: 12px;
 	padding: 4px;
+	color: #000000;
 `
 const Message = styled.div`
 	margin: 12px;
 	margin-top: 20px;
+	color: #eeeeee;
 `
